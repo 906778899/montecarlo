@@ -110,7 +110,7 @@ class IsingHamiltonian:
                 M = M + P*m
                 MM = MM + P*m*m
 
-            HC = (EE - E*E)/(T*T)
-            MS = (MM - M*M)/(T)
+            HC = (EE - E*E)/(T)
+            MS = (MM - M*M)/(T*T)
             
             return E, M, HC, MS
