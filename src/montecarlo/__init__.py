@@ -58,6 +58,7 @@ class BitString:
 class IsingHamiltonian:
     def __init__(self, G):
         self.G = G
+        self.N = len(G.nodes)
         self.mus = [0.0] * len(G.nodes)
         self.config = BitString(len(G.nodes))
     
@@ -114,3 +115,43 @@ class IsingHamiltonian:
             MS = (MM - M*M)/(T)
             
             return E, M, HC, MS
+
+
+class MonteCarlo:
+    def __init__(self, hamiltonian):
+        self.ham = hamiltonian
+        self.config = cp.deepcopy(hamiltonian.config)
+
+    def run(self, T, n_samples, n_burn):
+        k = 1.0
+        N = len(self.config)
+
+        E = []
+        M = []
+
+        total_steps = n_burn + n_samples
+
+        for step in range(total_steps):
+
+            for i in range(N):
+
+                currentE = self.ham.energy(self.config)
+
+                new_config = cp.deepcopy(self.config)
+                new_config.flip_site(i)
+
+                check = self.ham.energy(new_config)
+
+                dE = check - currentE
+
+                if dE <= 0 or np.random.rand() < np.exp(-dE / (k * T)):
+                    self.config = new_config 
+
+            if step >= n_burn:
+                e = self.ham.energy(self.config)
+                m = self.config.on() - self.config.off()
+
+                E.append(e)
+                M.append(m)
+
+        return np.array(E), np.array(M)
