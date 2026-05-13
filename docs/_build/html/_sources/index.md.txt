@@ -7,3 +7,11 @@ Python Boilerplate contains all the boilerplate you need to create a Python pack
 - [Installation](installation.md) - how to install montecarlo
 - [Usage](usage.md) - how to use montecarlo
 - [API Reference](api.md) - auto-generated API documentation
+
+# Table of Contents
+```{toctree}
+:maxdepth: 2
+:caption: Contents:
+installation
+usage
+api
